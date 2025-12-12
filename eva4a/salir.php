@@ -1,11 +1,7 @@
 <?php
-if (session_status() === PHP_SESSION_NONE){
-    session_start();
-}
-
-$_SESSION = array();
-
-if (ini_get("session.use_cookies")) {
-    
-}
+session_start();
+session_unset();
+session_destroy();
+header('Location: login.php');
+exit();
 ?>

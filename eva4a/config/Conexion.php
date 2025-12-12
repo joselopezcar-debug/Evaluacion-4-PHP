@@ -1,29 +1,31 @@
 <?php
 class Conexion {
-    private static $pdo = null;
+<?php
 
-    public static function getConexion() {
-        if (self::$pdo === null) {
-            $host = '127.0.0.1';
-            $db   = 'bd_biblioteca';
-            $user = 'root';
-            $pass = '';
-            $charset = 'utf8mb4';
-
-            $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
-            $options = [
-                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                PDO::ATTR_EMULATE_PREPARES   => false,
-            ];
-
+class Conexion {
+    private static $instancia = null;
+    
+    private function __construct() {}
+    
+    public static function obtenerConexion() {
+        if (self::$instancia === null) {
             try {
-                self::$pdo = new PDO($dsn, $user, $pass, $options);
+                $host = '127.0.0.1';
+                $dbname = 'bd_biblioteca';
+                $usuario = 'root';
+                $password = '';
+                
+                $dsn = "mysql:host=$host;dbname=$dbname;charset=utf8mb4";
+                self::$instancia = new PDO($dsn, $usuario, $password);
+                self::$instancia->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                self::$instancia->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
             } catch (PDOException $e) {
-                die("Error de conexión a la base de datos: " . $e->getMessage());
+                die("Error de conexión: " . $e->getMessage());
             }
         }
-        return self::$pdo;
+        return self::$instancia;
+    }
+}
     }
 }
 ?>

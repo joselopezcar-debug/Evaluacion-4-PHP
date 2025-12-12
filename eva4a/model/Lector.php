@@ -1,35 +1,45 @@
 <?php
 require_once('./model/Persona.php');
 require_once('./config/Conexion.php');
-
 class Lector extends Persona {
     private $dni;
-    public $cantidadPrestamos = 0; // propiedad para el conteo
-
-    public function __construct($id = null, $nombre = null, $correo = null, $dni = null) {
-        parent::__construct($id, $nombre, $correo);
+    
+    public function getDni() {
+        return $this->dni;
+    }
+    
+    public function setDni($dni) {
         $this->dni = $dni;
     }
-
-    public function getDni() { return $this->dni; }
-
-    // Método estático que lista lectores con la cantidad total de préstamos (incluye activos y devueltos)
+    
     public static function listarConConteoPrestamos() {
-        $pdo = Conexion::getConexion();
-        $sql = "SELECT l.id, l.nombre, l.correo, l.dni, COUNT(p.id) AS prestamos
+        $conn = Conexion::obtenerConexion();
+        $sql = "SELECT l.id, l.nombre, l.dni, l.correo, 
+                       COUNT(p.id) as cantidad_prestamos
                 FROM lector l
-                LEFT JOIN prestamo p ON p.id_lector = l.id
-                GROUP BY l.id, l.nombre, l.correo, l.dni
+                LEFT JOIN prestamo p ON l.id = p.id_lector
+                GROUP BY l.id
                 ORDER BY l.nombre";
-        $stmt = $pdo->prepare($sql);
+        
+        $stmt = $conn->prepare($sql);
         $stmt->execute();
-        $result = [];
-        while ($r = $stmt->fetch()) {
-            $lector = new Lector($r['id'], $r['nombre'], $r['correo'], $r['dni']);
-            $lector->cantidadPrestamos = (int)$r['prestamos'];
-            $result[] = $lector;
+        
+        $resultados = $stmt->fetchAll();
+        $lectores = [];
+        
+        foreach ($resultados as $row) {
+            $lector = new Lector();
+            $lector->setId($row['id']);
+            $lector->setNombre($row['nombre']);
+            $lector->setDni($row['dni']);
+            $lector->setCorreo($row['correo']);
+            
+            $lector->cantidad_prestamos = $row['cantidad_prestamos'];
+            
+            $lectores[] = $lector;
         }
-        return $result; // array de objetos Lector
+        
+        return $lectores;
     }
 }
 ?>

@@ -1,33 +1,41 @@
 <?php
+require_once('./model/Usuario.php');
 require_once('./includes/header.php');
-require_once('./config/Conexion.php');
-require_once('./model/Persona.php');
+
+if (!isset($_SESSION['usuario']) || $_SESSION['usuario']->getIdRol() != 1) {
+    header('Location: index.php');
+    exit();
+}
+
 require_once('./model/Lector.php');
-
-$conexion = Conexion::conexion();
-
 ?>
         <h2 class="mb-4">Listado de Lectores con Cantidad de Préstamos Realizados</h2>
 
         <table class="table table-striped table-hover">
-                <thead>
-                        <tr>
-                                <th col="col-3">Nombre</th>
-                                <th col="col-3">Correo</th>
-                                <th col="col-3">DNI</th>
-                                <th col="col-3"># Préstamos Total</th>
-                        </tr>
-                </thead>
-                <tbody>
-                        <?php
-                        foreach($lectores as $prestamos){
-                                echo '<tr>';
-                                echo '<td>' . $prestamos->Getnombre() . '</td>';
-                                echo '<td>' . $prestamos->Getcorreo() . '</td>';
-                                echo '<td>' . $prestamos->getDni() . '</td>';
-                        }
-                        ?>
-                </tbody>
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>DNI</th>
+                    <th>Correo</th>
+                    <th>Préstamos Realizados</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $lectores = Lector::listarConConteoPrestamos();
+                
+                foreach ($lectores as $lector):
+                ?>
+                <tr>
+                    <td><?php echo htmlspecialchars($lector->getId()); ?></td>
+                    <td><?php echo htmlspecialchars($lector->getNombre()); ?></td>
+                    <td><?php echo htmlspecialchars($lector->getDni()); ?></td>
+                    <td><?php echo htmlspecialchars($lector->getCorreo()); ?></td>
+                    <td><?php echo htmlspecialchars($lector->cantidad_prestamos); ?></td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
         </table>
 <?php
 require_once('./includes/footer.php');

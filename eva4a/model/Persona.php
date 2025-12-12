@@ -1,28 +1,31 @@
 <?php
 abstract class Persona {
-    private $id;
-    private $nombre;
-    private $correo;
-
-    public function Getid() {
-        return $this -> id;
+    protected $id;
+    protected $nombre;
+    protected $correo;
+    
+    public function getId() {
+        return $this->id;
     }
-    public function Setid() {
-        $this -> id = $id;
+    
+    public function setId($id) {
+        $this->id = $id;
     }
-
-    public function Getnombre() {
-        return $this -> nombre;
+    
+    public function getNombre() {
+        return $this->nombre;
     }
-    public function Setnombre() {
-        $this -> nombre = $nombre;
+    
+    public function setNombre($nombre) {
+        $this->nombre = $nombre;
     }
-
-    public function Getcorreo() {
-        return $this -> correo;
+    
+    public function getCorreo() {
+        return $this->correo;
     }
-    public function Setcorreo() {
-        $this -> correo = $correo;
+    
+    public function setCorreo($correo) {
+        $this->correo = $correo;
     }
 }
 ?>
