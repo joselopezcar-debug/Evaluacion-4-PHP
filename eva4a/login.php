@@ -7,27 +7,25 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
-    <div class="container d-flex justify-content-center align-items-center vh-100">
-        <div class="card shadow-lg p-4" style="width: 100%; max-width: 400px;">
-            <h3 class="card-title text-center text-primary mb-4">Iniciar Sesión</h3>
-            
-            <div class="alert alert-danger" role="alert">
-
+    <div class="container" style="max-width:400px;margin-top:80px;">
+        <div class="card shadow">
+            <div class="card-body">
+                <h3 class="card-title text-center">Iniciar Sesión</h3>
+                <?php if(isset($_GET['error'])): ?>
+                    <div class="alert alert-danger"><?= htmlspecialchars($_GET['error']) ?></div>
+                <?php endif; ?>
+                <form action="ingresar.php" method="post">
+                    <div class="mb-3">
+                        <label class="form-label">Correo</label>
+                        <input type="email" name="correo" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Clave</label>
+                        <input type="password" name="clave" class="form-control" required>
+                    </div>
+                    <button class="btn btn-primary w-100" type="submit">Ingresar</button>
+                </form>
             </div>
-
-            <form action="ingresar.php" method="POST">
-                <div class="mb-3">
-                    <label for="email" class="form-label">Correo Electrónico</label>
-                    <input type="email" class="form-control" id="email" name="email" required>
-                </div>
-                <div class="mb-3">
-                    <label for="clave" class="form-label">Contraseña</label>
-                    <input type="password" class="form-control" id="clave" name="clave" required>
-                </div>
-                <div class="d-grid">
-                    <button type="submit" class="btn btn-primary btn-block">Ingresar</button>
-                </div>
-            </form>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

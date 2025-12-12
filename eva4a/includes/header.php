@@ -1,5 +1,4 @@
 <?php
-// AGREGUE EL MANEJO DEL USUARIO LOGUEADO AQUÍ
 ?>
 <!DOCTYPE html>
 <html lang="es">
